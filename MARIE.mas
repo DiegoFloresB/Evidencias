@@ -1,0 +1,93 @@
+﻿	/Autores:Ana Karen Moreno, Ángel Mercado, Diego Flores, Matias Piedra
+    /Fecha: 13 de octubre de 2024
+    /Descripción: El programa que  aplica un descuento
+    			 /a una compra (suma de precios de diferentes artículos)
+                 /y muestra el precio final con descuento.
+                 
+    
+    / Limpiar el acumulador y configurar variables iniciales
+    org 000
+    clear
+    Load Zero             	 / Cargar 0 en el acumulador
+    store contadorProd       / Guardar 0 en Número de productos
+    store precioArts         / Guardar 0 en Precio del artículo
+    store sumaArts           / Guardar 0 en Suma total sin descuento
+    store valorDesc       	 / Guardar 0 en Suma total con multiplicación
+    store precioFinal        / Guardar 0 en Precio final con descuento
+    store precioNoDesc		 / Guardar 0 en precio final sin descuento
+    store descuento		 	/ Guardar 0 en el descuento
+
+
+
+    / Inicio -------------------------------------------------------------
+    /PEDIR NUM. DE ART. Y GUARDARLOS
+    Input                 / Pide número de artículos
+    Store contadorProd    / Guardar el número de artículos en contadorProd
+    Output
+
+
+    / Primer ciclo while -------------------------------------------------
+while1, Load contadorProd / Cargar el valor de contadorProd en el AC
+    Skipcond 800          / Si contadorProd>0, continua el bucle
+    Jump fin1
+
+    / Cuerpo del ciclo while
+    /PEDIR PRECIO DE ARTICULOS Y REALIZAR UNA SUMA
+    Input                 / Pide el precio del artículo
+    Store precioArts      / Guarda el input en la dir de precioArts
+    output
+    Load sumaArts         / Cargar el valor de sumaArts en el AC
+    Add precioArts        / Añadir el valor de precioArts en el AC
+    /output
+    Store sumaArts        / Guardar el resultado en sumaArts
+
+    / Decrece el contador de productos
+    Load contadorProd     / Cargar el valor del contador en el AC
+    Subt uno              / Restar 1 al valor de contadorProd
+    Store contadorProd    / Guardar el nuevo valor de contadorProd
+    /Output
+    Jump while1           / Repetir el ciclo while 
+    
+fin1,load sumaArts
+	output
+	store precioNoDesc
+    input
+    store descuento			/Revisar fracciones: 10%==x/10, 50%==x/2 ...
+    output
+    
+while2, Load sumaArts		/carga en el AC el valor de X (numerador)
+		Subt descuento		/resta el denominador
+        Skipcond 000		/si X<0 muestra el display,
+        Jump Add1			/sino ve a la etiqueta Add1
+        Jump fin2
+        
+Add1, Store sumaArts		/Almacena el valor del AC en X
+		Load valorDesc		/carga 0 en el AC
+        Add uno				/añade 1 en el AC
+        /output				Activar si se quiere ver las iteraciones
+		Store valorDesc		/Almacena el valor del AC en Q
+        Jump while2			/Se dirige a la etiqueta loop para comprobar el ciclo
+        
+fin2, load valorDesc
+	output
+	Load precioNoDesc      / Cargar en el AC el precio total multiplicado
+    output					/Muestra el valor de la compra sin descuento
+    Subt valorDesc         / Sustraer el precio total (equivalente al 10%)
+    Store precioFinal     / Guardar el resultado en precioFinal
+
+    / Mostrar el resultado final
+    Load precioFinal      / Cargar en el AC el precio final
+    Output                / Mostrar el precio final
+    Halt                  / Terminar el programa
+    
+    
+/ Variables
+Zero, Dec 0               / Constante 0
+uno, Dec 1                / Controlador para contadores
+contadorProd, Dec 0       / Número de productos
+descuento, Dec 0      / Número de veces a multiplicar
+precioArts, Dec 0         / Precio del artículo
+sumaArts, Dec 0           / Suma total sin descuento
+valorDesc, Dec 0        / Suma total con multiplicación
+precioFinal, Dec 0        / Precio final con descuento
+precioNoDesc, Dec 0		/precio final sin descuento
